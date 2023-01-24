@@ -1,0 +1,1 @@
+g++ -o "/root/projects/c-version/bin/x64/Debug/c-version.out" -Wl,--no-undefined -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack "/root/projects/c-version/obj/x64/Debug/main.o" "/root/projects/c-version/obj/x64/Debug/threadpool.o"

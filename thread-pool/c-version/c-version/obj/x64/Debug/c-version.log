@@ -1,0 +1,18 @@
+﻿  正在验证源
+  正在将源远程复制到“123.60.172.41”
+  正在验证体系结构
+  正在验证体系结构
+  正在启动远程生成
+  正在编译源:
+  threadpool.c
+F:\thread-pool\c-version\c-version\threadpool.c(48,62): warning : conversion to ‘long unsigned int’ from ‘int’ may change the sign of the result [-Wsign-conversion]
+F:\thread-pool\c-version\c-version\threadpool.c(48,62): warning :    48 |                 pool->taskQueue = (Task*)malloc(sizeof(Task) * queueSize);
+F:\thread-pool\c-version\c-version\threadpool.c(48,62): warning :       |                                                              ^
+F:\thread-pool\c-version\c-version\threadpool.c(59,78): warning : conversion to ‘long unsigned int’ from ‘int’ may change the sign of the result [-Wsign-conversion]
+F:\thread-pool\c-version\c-version\threadpool.c(59,78): warning :    59 |                 pool->workerThreadsId = (pthread_t*)malloc(sizeof(pthread_t) * max);
+F:\thread-pool\c-version\c-version\threadpool.c(59,78): warning :       |                                                                              ^
+F:\thread-pool\c-version\c-version\threadpool.c(65,68): warning : conversion to ‘long unsigned int’ from ‘int’ may change the sign of the result [-Wsign-conversion]
+F:\thread-pool\c-version\c-version\threadpool.c(65,68): warning :    65 |                 memset(pool->workerThreadsId, 0, sizeof(pthread_t) * max);
+F:\thread-pool\c-version\c-version\threadpool.c(65,68): warning :       |                                                                    ^
+  正在链接对象
+  c-version.vcxproj -> F:\thread-pool\c-version\c-version\bin\x64\Debug\c-version.out
