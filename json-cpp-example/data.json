@@ -1,0 +1,14 @@
+[
+	{
+		"address" : "\u6d59\u6c5f\u7701\u676d\u5dde\u5e02",
+		"personInfo" : 
+		[
+			{
+				"age" : 23,
+				"gender" : "\u7537",
+				"name" : "\u5f20\u4e09"
+			}
+		],
+		"school" : "\u5bb6\u91cc\u8e72\u5927\u5b66"
+	}
+]

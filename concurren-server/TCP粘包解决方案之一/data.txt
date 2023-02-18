@@ -1,0 +1,105 @@
+#include "socket.h"
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+// 创建监听的套接字
+int createScoket() {
+    int lfd = socket(PF_INET, SOCK_STREAM, 0);
+    if (lfd == -1) {
+        perror("socket()error\n");
+        return -1;
+    }
+    printf("创建套接字成功,fd=%d\n", lfd);
+    return lfd;
+}
+
+// 绑定本地的IP地址和端口号、设置监听
+int setListen(int lfd, unsigned short port) {
+    struct sockaddr_in addr;
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.s_addr = INADDR_ANY;
+    int ret = bind(lfd, (const struct sockaddr*)&addr, sizeof(addr));
+    if (ret == -1) {
+        perror("bind()error\n");
+        close(lfd);
+        return -1;
+    }
+    printf("套接字绑定成功\n");
+    ret = listen(lfd, 128);
+    if (ret == -1) {
+        perror("listen()error\n");
+        close(lfd);
+        return -1;
+    }
+    printf("设置监听成功\n");
+    return ret;
+}
+
+// 阻塞并等待客户端的连接
+int acceptConn(int lfd, struct sockaddr_in* client_addr) {
+    int client_fd;
+    if (client_addr == NULL) {
+        client_fd = accept(lfd, NULL, NULL);
+    } else {
+        socklen_t len = sizeof(struct sockaddr_in);
+        client_fd = accept(lfd, (struct sockaddr*)client_addr, &len);
+    }
+    
+    if (client_fd == -1) {
+        perror("accept()error\n");
+        close(lfd);
+        return -1;
+    }
+    char ip[64] = {0};
+    printf("成功和客户端建立连接, 客户端IP为：%s,客户端端口号为：%d\n",
+        inet_ntop(AF_INET, client_addr->sin_addr.s_addr, ip, sizeof(ip)),
+        ntohs(client_addr->sin_port));
+    return client_fd;
+}
+
+int connectToHost(int fd, const char* ip, unsigned short port) {
+    struct sockaddr_in addr;
+    inet_pton(AF_INET, ip, addr.sin_addr.s_addr);
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    int ret = connect(fd, (const struct sockaddr*)&addr, sizeof(addr));
+    if (ret == -1) {
+        perror("connect()error\n");
+        close(fd);
+        return -1;
+    }
+    printf("和服务器成功建立连接\n");
+    return ret;
+}
+
+
+int sendMsg(int fd, const char* msg, int len) {
+    int len = send(fd, msg, len, 0);
+    if (len == -1) {
+        perror("send()error\n");
+        close(fd);
+    }
+    return len;
+}
+int recvMsg(int fd, char* buff, int size) {
+    int len = recv(fd, buff, size, 0);
+    if (len == 0) {
+        printf("对方已经断开了连接\n");
+        close(fd);
+    } else if (len == -1) {
+        perror("recv()error\n");
+        close(fd);
+    }
+    return len;
+
+}
+int closeSocket(int fd) {
+    int ret = close(fd);
+    if (ret == -1) {
+        perror("connect()error\n");
+    }
+    return ret;
+}
